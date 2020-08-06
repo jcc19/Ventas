@@ -7,8 +7,8 @@ package ModeloDAO;
 
 /**
  *
- * @author TuNombre
+ * @author joseph
  */
-public class VentasDAO {
+public class compradorDAO {
     
 }
