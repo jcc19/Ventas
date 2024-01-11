@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IR01006SIV" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d38304d1-5311-4010-bbbb-3724fce88ba0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="santander"/>
+	<parameter name="anio" class="java.lang.String"/>
+	<parameter name="mes" class="java.lang.String"/>
+	<parameter name="dia" class="java.lang.String"/>
+	<parameter name="anexo" class="java.lang.String"/>
+	<parameter name="version" class="java.lang.String"/>
+	<queryString language="plsql">
+		<![CDATA[SELECT *
+  FROM (SELECT AF.TITULO AS TITULO,
+               AF.CODIGO AS FILA,
+               AF.SECUENCIA AS SEC_FILA,
+               AF.DESCRIPCION AS DESCRIP_FILA,
+               AC.CODIGO AS COLUMNA,
+               ROUND(AI.IMPORTE, 2) AS IMPORTE
+          FROM EIR_ANEXO_INFORME AI
+          JOIN EIR_ANEXO_FILA AF
+            ON AI.ANEXO = AF.ANEXO
+           AND AI.VERSION = AF.VERSION
+           AND AI.TITULO = AF.TITULO
+           AND AI.FILA = AF.CODIGO
+           AND AI.SECUENCIA_FILA = AF.SECUENCIA
+          JOIN EIR_ANEXO_COLUMNA AC
+            ON AI.ANEXO = AC.ANEXO
+           AND AI.VERSION = AC.VERSION
+           AND AI.COLUMNA = AC.CODIGO
+           AND AI.TITULO = AC.TITULO
+           AND AI.SECUENCIA_COLUMNA = AC.SECUENCIA
+           AND AF.ANEXO = AC.ANEXO
+           AND AF.VERSION = AC.VERSION
+           AND AF.TITULO = AC.TITULO
+         WHERE AI.ANIO = $P{anio}
+           AND AI.MES = $P{mes}
+           AND AI.DIA = $P{dia}
+           AND AI.ANEXO = $P{anexo}
+           AND AI.VERSION = $P{version}
+           AND AI.TITULO = 19
+          AND AI.FILA = 2
+         ORDER BY AF.TITULO, AF.CODIGO, AF.SECUENCIA)
+PIVOT(SUM(IMPORTE)
+   FOR COLUMNA IN(1, 2, 3, 4))
+ ORDER BY TITULO, FILA, SEC_FILA]]>
+	</queryString>
+	<field name="TITULO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TITULO"/>
+		<property name="com.jaspersoft.studio.field.label" value="TITULO"/>
+	</field>
+	<field name="FILA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="FILA"/>
+		<property name="com.jaspersoft.studio.field.label" value="FILA"/>
+	</field>
+	<field name="SEC_FILA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="SEC_FILA"/>
+		<property name="com.jaspersoft.studio.field.label" value="SEC_FILA"/>
+	</field>
+	<field name="DESCRIP_FILA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DESCRIP_FILA"/>
+		<property name="com.jaspersoft.studio.field.label" value="DESCRIP_FILA"/>
+	</field>
+	<field name="1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="1"/>
+		<property name="com.jaspersoft.studio.field.label" value="1"/>
+	</field>
+	<field name="2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="2"/>
+		<property name="com.jaspersoft.studio.field.label" value="2"/>
+	</field>
+	<field name="3" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="3"/>
+		<property name="com.jaspersoft.studio.field.label" value="3"/>
+	</field>
+	<field name="4" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="4"/>
+		<property name="com.jaspersoft.studio.field.label" value="4"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="-20" y="25" width="80" height="20" uuid="47e1983a-8e21-4f47-af45-9f013dc3c8c8">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-20" y="-20" width="80" height="45" uuid="feae6f49-b79d-40c6-9f25-ca7344cd6416">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Provisiones genéricas constituidas]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="60" y="-20" width="200" height="65" uuid="6cd75242-9c25-4e4f-a876-a65f683101f1"/>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mes">
+					<subreportParameterExpression><![CDATA[$P{mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dia">
+					<subreportParameterExpression><![CDATA[$P{dia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anexo">
+					<subreportParameterExpression><![CDATA[$P{anexo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="version">
+					<subreportParameterExpression><![CDATA[$P{version}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["IR01006VI.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>
